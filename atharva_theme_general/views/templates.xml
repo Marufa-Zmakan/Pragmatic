@@ -502,14 +502,14 @@
                             <div t-attf-class="carousel-item h-100#{' active' if product_image_first else ''}">
                                 <t t-if="product_image._name == 'product.image' and product_image.embed_code">
                                     <a t-att-href="product_image.video_url" class="video-gallery-tag">
-                                        <div class="d-flex align-items-center justify-content-center h-100 embed-responsive embed-responsive-16by9">
+                                        <div class="image-container d-flex align-items-center justify-content-center h-100 embed-responsive embed-responsive-16by9">
                                             <t t-raw="product_image.embed_code"/>
                                         </div>
                                     </a>
                                 </t>
                                 <t t-else="">
                                     <a t-att-href="website.image_url(product_image, 'image_1024')" class="img-gallery-tag">
-                                        <div t-field="product_image.image_1920" class="d-flex align-items-center justify-content-center h-100" t-options='{"widget": "image", "preview_image": "image_1024", "class": "product_detail_img mh-100", "alt-field": "name", "zoom": product_image.can_image_1024_be_zoomed and "image_1920"}'/>
+                                        <div t-field="product_image.image_1920" class="image-container d-flex align-items-center justify-content-center h-100" t-options='{"widget": "image", "preview_image": "image_1024", "class": "product_detail_img mh-100", "alt-field": "name", "zoom": product_image.can_image_1024_be_zoomed and "image_1920"}'/>
                                     </a>
                                 </t>
                             </div>
