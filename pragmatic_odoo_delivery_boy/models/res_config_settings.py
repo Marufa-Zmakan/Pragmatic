@@ -18,6 +18,7 @@ class base(models.TransientModel):
     whatsapp_token = fields.Char('Whatsapp Token')
     qr_code_image = fields.Binary("QR code")
     whatsapp_authenticate = fields.Boolean('Authenticate', default=False)
+    zts_notification_dri = fields.Many2one('mail.activity.type', string="Driver Notification Type")
 
     @api.model
     def get_values(self):
@@ -27,6 +28,8 @@ class base(models.TransientModel):
         res['whatsapp_token'] = Param.sudo().get_param('pragmatic_odoo_delivery_boy.whatsapp_token')
         res['whatsapp_authenticate'] = Param.sudo().get_param('pragmatic_odoo_delivery_boy.whatsapp_authenticate')
         res.update(qr_code_image=Param.sudo().get_param('pragmatic_odoo_delivery_boy.qr_code_image'))
+        zts_notification_dri = int(Param.sudo().get_param('pragmatic_odoo_delivery_boy.zts_notification_dri', default=False))
+        res.update(zts_notification_dri=zts_notification_dri)
         return res
 
 
@@ -36,6 +39,7 @@ class base(models.TransientModel):
         self.env['ir.config_parameter'].sudo().set_param('pragmatic_odoo_delivery_boy.whatsapp_token', self.whatsapp_token)
         # self.env['ir.config_parameter'].sudo().set_param('pragmatic_odoo_whatsapp_integration.group_send_report_url_in_message', self.group_send_report_url_in_message)
         self.env['ir.config_parameter'].sudo().set_param('pragmatic_odoo_delivery_boy.qr_code_image', self.qr_code_image)
+        self.env['ir.config_parameter'].sudo().set_param('pragmatic_odoo_delivery_boy.zts_notification_dri',self.zts_notification_dri.id)
 
     def action_get_qr_code(self):
         return {
