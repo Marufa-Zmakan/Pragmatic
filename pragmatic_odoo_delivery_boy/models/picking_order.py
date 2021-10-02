@@ -83,6 +83,7 @@ class picking_order(models.Model):
     payment_collection = fields.Boolean("Payment Collected")
     delivery_type = fields.Selection(
         [('home_delivery', 'Home Delivery'), ('take_away', 'Take Away'), ('default', 'Default')])
+    company_id = fields.Many2one('res.company', string='Company')
 
     def onchange_state_id(self,res):
         if self['delivery_boy'] and self['state'] in ['accept']:
