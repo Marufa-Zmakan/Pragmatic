@@ -113,6 +113,39 @@ class picking_order(models.Model):
 
     def action_picking_order_canceled(self):
         self.write({'state': 'canceled'})
+        
+    def action_picking_order_notification(self,res):
+        if self['state'] in ['assigned']:
+            model_id = self.env['ir.model'].sudo().search([('model', '=', 'picking.order')]).id
+            activity_type = self.env['ir.config_parameter'].sudo().get_param(
+                'pragmatic_odoo_delivery_boy.zts_notification_dri')
+            driver_partner = self.env['res.partner'].sudo().browse(self.delivery_boy.id)
+            driver_user=driver_partner.user_id.id
+            print(driver_user)
+            print(driver_partner)
+            activity_record = {
+                'activity_type_id': activity_type,
+                'res_id': self['id'],
+                'res_model_id': model_id,
+                'res_model': 'picking.order',
+                'date_deadline': date.today(),
+                'summary': 'You have a new order',
+                'user_id': driver_user,
+            }
+            self.env['mail.activity'].create(activity_record)
+
+            odoobot_id = self.env['ir.model.data'].xmlid_to_res_id("base.partner_root")
+            channel = self.env['mail.channel'].with_context(mail_create_nosubscribe=True).create({
+                'channel_partner_ids': [(4, driver_partner.id), (4, odoobot_id)],
+                'public': 'private',
+                'channel_type': 'chat',
+                'email_send': False,
+                'name': 'OdooBot'
+            })
+            message = _(
+                "Hello,<br/>You have a new delivery Order</b>")
+            channel.sudo().message_post(body=message, author_id=odoobot_id, message_type="comment",
+                                        subtype="mail.mt_comment")
 
     def assignDriver(self):
         active_ids = self.env.context.get('active_ids',[])
@@ -209,6 +242,7 @@ class picking_order(models.Model):
         self.update_payment_status(vals)
         res = super(picking_order, self).write(vals)
         self.onchange_state_id(res)
+        self.action_picking_order_notification(res)
         return res
 
     @api.model
