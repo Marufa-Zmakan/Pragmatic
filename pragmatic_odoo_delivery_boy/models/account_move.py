@@ -2,9 +2,6 @@ from odoo import fields, models, api, _
 
 class AccountMove(models.Model):
     _inherit = "account.move"
-    
-    delivery_boy = fields.Many2one('res.partner', 'Delivery Boy',
-                                   domain="[('is_driver', '=', True),('status','=','available')]")
 
     def write(self, vals):
         # print("\n\nIn write account move******************************",vals,"\nself.id: ",self.id)

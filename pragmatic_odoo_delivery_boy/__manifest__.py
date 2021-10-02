@@ -44,8 +44,7 @@ Features:
         'views/website_menu.xml',
         'views/job_list_customer_template.xml',
         'views/route-map-customer-view.xml',
-        'views/driver_location_views.xml',
-        'views/account_move_driver.xml'
+        'views/driver_location_views.xml'
 
     ],
     'images': ['static/description/odoo-delivery-driver-boy-gif.gif'],
