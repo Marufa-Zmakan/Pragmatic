@@ -31,11 +31,14 @@
 
     <template id="wk_geo_shop_map" inherit_id="website_sale.address" name="Map">
         <xpath expr="//div[@id='div_zone']" position="after">
-         <div class="col-lg-4">
+            <div class="w-100"/>
+            <label class="col-form-label">Pin location on map</label>
+            <div class="w-100"/>
+            <div class="col-lg-8">
             <div id="cont">
-            <div id="address_map" style="width: 170%; height: 95%;"></div>
+            <div id="address_map"></div>
             </div>
-        </div>
+            </div>
         </xpath>
         <xpath expr="//div[@id='div_zone']" position="after">
             <input type="text" name="partner_latitude" t-att-value="'partner_latitude' in checkout and checkout['partner_latitude']" />
